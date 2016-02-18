@@ -41,10 +41,10 @@
             </objects>
             <point key="canvasLocation" x="1006" y="769"/>
         </scene>
-        <!--Containers Table Controller-->
+        <!--Detail Container Table Controller-->
         <scene sceneID="zn7-Km-hWM">
             <objects>
-                <tableViewController id="brQ-9a-Wir" customClass="ContainersTableController" customModule="VideoBlogKC" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Detail Container Table Controller" id="brQ-9a-Wir" customClass="ContainersTableController" customModule="VideoBlogKC" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="DjE-5T-kK7">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -70,12 +70,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r7J-76-eZg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="354" y="769"/>
+            <point key="canvasLocation" x="306" y="769"/>
         </scene>
-        <!--View Controller-->
+        <!--Vide Blobs-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="VideoBlogKC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Vide Blobs" id="BYZ-38-t0r" customClass="ViewController" customModule="VideoBlogKC" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -98,11 +98,11 @@
                             <constraint firstItem="OfG-3R-6AE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yM7-xZ-IDO"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Sm5-2k-O1A"/>
+                    <navigationItem key="navigationItem" title="Vide Blobs" id="Sm5-2k-O1A"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-365" y="769"/>
+            <point key="canvasLocation" x="-417" y="769"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8dM-bx-FsK">
@@ -120,7 +120,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="02b-9W-CXD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-716" y="-11"/>
+            <point key="canvasLocation" x="-1084" y="769"/>
         </scene>
     </scenes>
 </document>

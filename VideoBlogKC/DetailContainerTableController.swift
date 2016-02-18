@@ -19,8 +19,8 @@ class DetailContainerTableController: UITableViewController {
     // en la tabla, podemos preguntarle  a este container para obtener la
     // lista de blobs que están contenidos dentro del mismo.
     
-    // Creo  una  variable  de  tipo array, que contendrá en este caso blobs, en vez
-    // de containers ya que es lo que queremos mostrar en la nueva tabla de detalles
+    // Creo una variable modelo de tipo array, que contendrá en este caso blobs, en vez
+    // de containers  ya que  es  lo que queremos mostrar en la nueva tabla de detalles
     var model : [AZSCloudBlob]?
     
     
@@ -28,8 +28,17 @@ class DetailContainerTableController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        populateModel()// función para rellenar el array con los blobs recibidos
-        fakeUpload()
+        // LLamo al método que pide los elementos del contenedor en
+        // cuestión, para rellenar el array con los blobs recibidos
+        populateModel()
+        // sincronizo
+        self.title = currentContainer?.name
+        // creo botón para captura con  la cámara y la subida, a la
+        // action le paso  el 'IBAction uploadContenido' que éste a
+        // su vez llama al método 'fakeUpload'.
+        let plusButton = UIBarButtonItem(barButtonSystemItem: .Camera, target: self, action: "uploadContenido:")
+        // Lo situo a la derecha
+        self.navigationItem.rightBarButtonItem = plusButton
     }
     
     override func didReceiveMemoryWarning() {
@@ -45,20 +54,22 @@ class DetailContainerTableController: UITableViewController {
         
         // Hago una  navegación jerárquica  a través de
         // los blobs que contiene mi container en Azure
+        // Con este método obtengo información
         currentContainer?.listBlobsSegmentedWithContinuationToken(nil, // Nil, para obtener todo el contenido que hay
-            prefix: nil,// Aquí  puedo filtrar, p.ejemplo,  dame todos los vídeos que  empiecen con la  palabra vídeo
+            prefix: nil,// Aquí  puedo filtrar, p.ejemplo,  dame todos los vídeos que  empiecen con el ID del usuario
             useFlatBlobListing: true,// devuelve  una representación  en plano, sin  formato  en la  salida del texto
-            blobListingDetails: AZSBlobListingDetails.All,// por si  quiero sacar a parte del  contenido  propiedades
-            maxResults: -1,// si lo pongo a -1, devuelve  todos los  elementos que cumplen con el parámetro  anterior
+            blobListingDetails: AZSBlobListingDetails.All,// le  indico que  me de el  resultado con el mayor detalle
+            maxResults: -1,//si lo pongo a -1, devuelve todos los elementos que cumplen con los parámetros anteriores
             accessCondition: nil,
             requestOptions: nil,
-            operationContext: nil,
-            // error y result son tipo  opcionales, puede que no venga nada dentro
+            operationContext: nil, // tracear lo  que  se  está haciendo  con el SDK
+            // Último bloque, una clausura con un error y el resultado de la llamada
+            // error y result son tipo  opcionales, puede  que no  venga nada dentro
             completionHandler: { (error : NSError?, resultSegment: AZSBlobResultSegment?) -> Void in
-                // Espero recibir un array de tipo 'AZSCloudBlob' ==> que es model
+                // Espero  recibir un array  de tipo 'AZSCloudBlob' ==> que es model
                 // Compruebo que no hay error
-                if (error == nil){ //  Si es igual  a nil, es que no tengo errores
-                    // Saco la lista de  elementos y  se los asigno al array model
+                if (error == nil){ //  Si es igual  a  nil, es que  no tengo errores
+                    // Saco  la  lista de  blobs  y  se los  asigno  al array  model
                     self.model = resultSegment!.blobs as? [AZSCloudBlob]
                     // Actualizo la tabla en la cola principal
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -82,7 +93,7 @@ class DetailContainerTableController: UITableViewController {
         // a la imagen que se va a subir, cada vez que se suba crea  uno nuevo
         let blobLocal = currentContainer?.blockBlobReferenceFromName("blob-\(NSUUID().UUIDString)")
         
-        // Tengo que convertir la imagen en NSData
+        // Tengo   que  convertir  la  imagen  en  NSData
         var data : NSData?
         // Para generar el NSData de la imagen que quiero
         // subir y que  acabo  de  incoporar al  proyecto
@@ -102,7 +113,7 @@ class DetailContainerTableController: UITableViewController {
     // Botón para subir contenido a nuestro container en Azure
     @IBAction func uploadContenido(sender: AnyObject) {
         
-        
+        fakeUpload()
     }
     // MARK: - Table view data source
     
