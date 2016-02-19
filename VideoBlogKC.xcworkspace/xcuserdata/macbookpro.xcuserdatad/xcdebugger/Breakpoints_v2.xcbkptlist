@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "VideoBlogKC/DetailContainerTableController.swift"
-            timestampString = "477597596.204271"
+            timestampString = "477612266.09147"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "59"
-            endingLineNumber = "59"
-            landmarkName = "populateModel()"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "startCaptureVideoBlobFromViewController(_:withDelegate:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "VideoBlogKC/DetailContainerTableController.swift"
+            timestampString = "477612228.911527"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
+            landmarkName = "updateLocalModelWithIndexpath(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -118,6 +118,7 @@ class DetailContainerTableController: UITableViewController {
         
         // 1º parámetro, el viewController, yo mismo, 2º parámetro
         // el delegado,  seré de nuevo yo  mismo, este controlador.
+        // Lanza el controlador del 'UImagePickerController'
         startCaptureVideoBlobFromViewController(self, withDelegate: self)
     }
     // MARK: - Table view data source
@@ -156,6 +157,62 @@ class DetailContainerTableController: UITableViewController {
         return cell
     }
     
+    // Lógica   para  la   eliminación  de  un  elemento  en  la  tabla
+    // A este  método  puedo preguntar si  estilo es de  eliminación  y
+    // nos mete  todo el  soporte del  swipe, eliminación  de  la celda
+    // Tengo que obtener el indexPath del elemento a eliminar, borrarlo
+    // de nuestro modelo local y  borrarlo también  del Storgade  Azure
+    override func tableView(
+        tableView: UITableView,
+        commitEditingStyle editingStyle: UITableViewCellEditingStyle,
+        forRowAtIndexPath indexPath: NSIndexPath) {
+        // Para otener el indexPah, puedo definir una property a  nivel
+        // de  clase o hacer un método  como el que hago a continuación
+        
+        // Compruebo  que  el  estilo  es  de borrado del archivo-vídeo
+        if(editingStyle == .Delete){
+            // Actualizo-borro, el objeto con el indexPath que  le paso
+            // de la celda que hemos marcado para su  eliminación-tabla
+            updateLocalModelWithIndexpath(indexPath)
+        }
+    }
+    
+    /// Método para  actualizar-borrar el objeto del indexPath recibido
+    func updateLocalModelWithIndexpath(index: NSIndexPath){
+        
+        // Realizo  un 'beginUpdates' de  la tabla-actualizo
+        // Antes  de  actualizar la tabla ===> 'beginUpdates'
+        tableView.beginUpdates()
+        
+        // Una, la quito de la vista, no compruebo  si es nil
+        // Espera recibir un array  indexPath, sólo tengo uno
+        tableView.deleteRowsAtIndexPaths([index], withRowAnimation: .Automatic)
+    
+        // Segundo, elimino  el fichero  del Storage  de Azure
+        // Me creo un método nuevo  para no tenerlo  todo aquí
+        // Le pasamos el elemento que vamos a eliminar Storage
+        deleteBlob(model![index.row])
+        
+        // Último la  quito de local, que  es  nuestro modelo
+        // Le paso al modelo la fila-row  que quiero eliminar
+        model?.removeAtIndex(index.row)
+        
+        // Terminados los cambios, actualizo la table de nuevo
+        // Después  de  actualizar  la  tabla ===> 'endUpdates'
+        tableView.endUpdates()
+    }
+    
+    func deleteBlob(blob : AZSCloudBlob){
+        
+        blob.deleteWithCompletionHandler { (error : NSError?) -> Void in
+            // Si es distinto de nil tenemos un error
+            if(error != nil){
+                print("Error -> \(error)")
+            }else{
+                print("Blob borrado con éxito")
+            }
+        }
+    }
     
     // MARK: - Métodos para la Captura de Vídeo
     
@@ -208,7 +265,8 @@ class DetailContainerTableController: UITableViewController {
     /// Método para guardar localmente un NSData
     func saveInDocuments(data : NSData) {
         
-        let blobNameUUID = "/video-\(NSUUID().UUIDString).mov"
+        // Constante con la cual doy nombre con un 'UUIDString' ya creado y con la extensión 'mov'
+        let blobNameUUID = "video-\(NSUUID().UUIDString).mov"
         // Obtenemos el 'path' del directorio donde voy  guardar y  ponerle un nombre  al fichero
         // El primer parámetro le paso el directorio del documento y el 2º el dominio del usuario
         // Como esto nos devuelve un array le decimos que nos devuelva el primer elemento => '[0]'
@@ -216,7 +274,7 @@ class DetailContainerTableController: UITableViewController {
         let documents = NSSearchPathForDirectoriesInDomains(.DocumentationDirectory, .UserDomainMask, true)[0] as String
         // Ahora le agrego a documents  un nombre de fichero al vídeo  a guardar que he capturado
         // A este fichero le doy un nombre con un 'UUIDString' ya creado y con  la extensión 'mov'.
-        let filePath = documents.stringByAppendingString(blobNameUUID)
+        let filePath = documents.stringByAppendingString(blobNameUUID) // le  añado la  extensión
         // Ya tenemos el nombre del fichero, pero el fichero  aún no existe, o creo que no existe.
         // Para ello compruebo con un 'if' si existe o no el fichero. Con 'contentsOfFile' obtngo
         // todas las coincidencias que encuentra en el'filePath' que le paso, metidas en un array
@@ -226,14 +284,37 @@ class DetailContainerTableController: UITableViewController {
         // Puedo preguntar si es nil, es un opcional, y compruebo si está a nil, para persistirlo
         // ya que, al comprobar  que no es nil, es  que no existe, por tanto  podemos persistirlo.
         if (array == nil) {
-            // voy a persistir el fichero localmente
+            // voy  a persistir  el fichero  localmente  y una vez haya guardado  lo subo a Azure.
             data.writeToFile(filePath, atomically: true)
             // Para  subirlo  a  Azure, llamo a  la  función que  he  creado ==> 'uploadToStorage'
+            // pasándole el NSData => el vídeo y el nombre NSUUID ya creado con la extensión'.mov'
             uploadToStorage(data, blobName: blobNameUUID)
         }
     }
     
 }
+
+/// Función vídeo: muestra una alerta cuando el vídeo se ha guardado  correctamente + contexInfo?
+//  El método 'UISaveVideoAtPathToSavedPhotosAlbum'  llamodo en la función 'imagePickerController'
+//  me o bliga a i mplementar un 'selector' como  parámetro al guardar el  vídeo, y le  paso éste
+func video(videoPath: String, didFinishSavingWithError error: NSError?, contextInfo: AnyObject){
+    
+    var title = "Ok"
+    var message = "Video grabado correctamente"
+    
+    // Compruebo si hay error al guardar el vídeo
+    if let _ = error{
+        // Pongo título
+        title = "Fail"
+        // Muestro el mensaje de error
+        message = "El vídeo no se ha grabado"
+    }
+    // Si no hay error, creo una alerta para avisar al usuario de que el vídeo se grabó 'Ok'
+    let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Cancel, handler: nil))
+    alert.presentViewController(alert, animated: true, completion: nil)
+}
+
 
 
 
@@ -260,6 +341,9 @@ extension DetailContainerTableController: UIImagePickerControllerDelegate{
         // va  a poder  tener acceso a  lo que hemos capturado, lo casteo a cadena
         let mediaType = info[UIImagePickerControllerMediaType] as! String
         
+        // Ejecuto el 'dismiss' para cerrar el Picker y salir de la vista del vídeo
+        dismissViewControllerAnimated(true, completion: nil)
+        
         // Comprobamos  que  hemos  capturado, si  es  un  vídeo ==> 'kUTTypeMovie'
         if(mediaType == kUTTypeMovie as String) {
             
@@ -283,7 +367,9 @@ extension DetailContainerTableController: UIImagePickerControllerDelegate{
             // Le  pasamos  también el 'path' donde tenemos  guardado el vídeo.
             // El target seremos  nosotros mismos, este  controlador ==> 'self'
             // El 'contextInfo' último parámetro  a nil, no le paso nigún dato.
-            UISaveVideoAtPathToSavedPhotosAlbum(path!, self, "video:didFinishSavingWithError:contextInfo", nil)
+            // Éste método se invoca desde la extensión del UIImagePickerContr
+            //
+            UISaveVideoAtPathToSavedPhotosAlbum(path!, self, "video:didFinishSavingWithError:contextInfo:", nil)
         }
     }
 }
