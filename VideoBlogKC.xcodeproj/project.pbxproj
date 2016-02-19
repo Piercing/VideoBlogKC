@@ -22,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		252A83DA33CAADFF9E6451CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		520ABF071C765A7E00071CF1 /* MyPlaygroundVideoBlobKC.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlaygroundVideoBlobKC.playground; sourceTree = "<group>"; };
 		5254D7211C74D77C006A1053 /* ContainersTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainersTableController.swift; sourceTree = "<group>"; };
 		5254D7231C74F57A006A1053 /* DetailContainerTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailContainerTableController.swift; sourceTree = "<group>"; };
 		528E6D0C1C7534610039BCE8 /* FONDOS_PANTALLA_024.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = FONDOS_PANTALLA_024.jpg; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 		52B6D3061C735B53008F73DE = {
 			isa = PBXGroup;
 			children = (
+				520ABF071C765A7E00071CF1 /* MyPlaygroundVideoBlobKC.playground */,
 				528E6D0E1C75346E0039BCE8 /* Resources */,
 				52B6D3111C735B54008F73DE /* VideoBlogKC */,
 				52B6D3101C735B53008F73DE /* Products */,

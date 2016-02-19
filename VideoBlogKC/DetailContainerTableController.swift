@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 class DetailContainerTableController: UITableViewController {
     
@@ -17,7 +18,7 @@ class DetailContainerTableController: UITableViewController {
     // Como en el controlador de la tabla  containers,  mediante el segue,
     // ya nos viene la propiedad con el contenedor que se ha seleccionado
     // en la tabla, podemos preguntarle  a este container para obtener la
-    // lista de blobs que están contenidos dentro del mismo.
+    // lista de  blobs que  están contenidos  dentro del mismo (container).
     
     // Creo una variable modelo de tipo array, que contendrá en este caso blobs, en vez
     // de containers  ya que  es  lo que queremos mostrar en la nueva tabla de detalles
@@ -79,7 +80,9 @@ class DetailContainerTableController: UITableViewController {
         })
     }
     
-    func fakeUpload(){
+    // Metodo para subir al Storage de Azure el vídeo, foto.. que he capturado
+    // Recibe el NSData  del archivo que he  capturado y el nombre del recurso
+    func uploadToStorage(data : NSData, blobName : String){
         
         // La mecánica es casi  siempre la misma, tengo el contenedor y lo que
         // voy a hace es crear un blob local, persistirlo localmente y una vez
@@ -91,17 +94,17 @@ class DetailContainerTableController: UITableViewController {
         // lo que no vulnera y con un NSUUID convertido todo esto a un  String
         // Éste genera un número aleatorio después del 'blob-' que se asignará
         // a la imagen que se va a subir, cada vez que se suba crea  uno nuevo
-        let blobLocal = currentContainer?.blockBlobReferenceFromName("blob-\(NSUUID().UUIDString)")
+        let blobLocal = currentContainer?.blockBlobReferenceFromName(blobName)
         
         // Tengo   que  convertir  la  imagen  en  NSData
-        var data : NSData?
+        // var data : NSData?
         // Para generar el NSData de la imagen que quiero
         // subir y que  acabo  de  incoporar al  proyecto
-        data = UIImageJPEGRepresentation(UIImage(named: "FONDOS_PANTALLA_024.jpg")!, 0.8)
+        // data = UIImageJPEGRepresentation(UIImage(named: "FONDOS_PANTALLA_024.jpg")!, 0.8)
         // Mediante este bloque local ya podemos subir con alguno de sus  métodos
         // Recibe un  NSData, un  elemento  binario  comprimido, y  un bloque  de
         // finalización, un closure que recibe un error en caso de que lo hubiera.
-        blobLocal?.uploadFromData(data! , completionHandler: { (error : NSError?) -> Void in
+        blobLocal?.uploadFromData(data , completionHandler: { (error : NSError?) -> Void in
             // Si hay error, lo muestro por consola mismamente
             if (error != nil){
                 print("Error -> \(error)")
@@ -110,10 +113,12 @@ class DetailContainerTableController: UITableViewController {
     }
     // MARK: - IBActions
     
-    // Botón para subir contenido a nuestro container en Azure
+    // Botón para s ubir contenido  a nuestro  container  en Azure
     @IBAction func uploadContenido(sender: AnyObject) {
         
-        fakeUpload()
+        // 1º parámetro, el viewController, yo mismo, 2º parámetro
+        // el delegado,  seré de nuevo yo  mismo, este controlador.
+        startCaptureVideoBlobFromViewController(self, withDelegate: self)
     }
     // MARK: - Table view data source
     
@@ -152,40 +157,43 @@ class DetailContainerTableController: UITableViewController {
     }
     
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the specified item to be editable.
-    return true
-    }
-    */
+    // MARK: - Métodos para la Captura de Vídeo
     
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    // Creo  una función que al  pulsar el botón de la cámara
+    // la lance, ponga el modo de captura  de vídeo, etc, etc
+    // Lo ideal es  poner este  método  en una  clase a parte
+    // Recibe un viewController y un  protocolo como delegate
+    // que conforme el 'UIImagePickerControllerDelegate' y el
+    // 'UIImagePickerControllerDelegate' obligar a extenderlo
+    func startCaptureVideoBlobFromViewController(ViewController: UIViewController,
+        withDelegate delegate: protocol<UIImagePickerControllerDelegate, UINavigationControllerDelegate>) -> Bool {
+            
+            // Comprobamos si podemos utilizar o  acceder a la cámara
+            if (UIImagePickerController.isSourceTypeAvailable(.Camera) == false) {
+                // Si no podemos nos salimos de aquí si provocar error
+                return false
+            }
+            // Declaro  una  variable de tipo  UIImagePickerController
+            // para poder  definir las  funciones que podemos realizar
+            // con la cámara
+            
+            // Indicamos desde que fuente que vamos a capturar, en este
+            // caso la cámara
+            let cameraController = UIImagePickerController()
+            cameraController.sourceType = .Camera
+            // Indicamos  el  tipo  de contenido  que  esperamos  utilizar
+            // Importo un módulo para 'KUTTypeMovie' =>'MobileCoreServices'
+            cameraController.mediaTypes = [kUTTypeMovie as NSString as String]
+            // No permito la edición del vídeo
+            cameraController.allowsEditing = false
+            // Asigno el delegate
+            cameraController.delegate = delegate
+            // Por último presentarlo
+            presentViewController(cameraController, animated: true, completion: nil)
+            
+            // Como es una función booleana, si todo ha ido bien hasta aquí
+            return true
     }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return false if you do not want the item to be re-orderable.
-    return true
-    }
-    */
     
     /*
     // MARK: - Navigation
@@ -197,4 +205,102 @@ class DetailContainerTableController: UITableViewController {
     }
     */
     
+    /// Método para guardar localmente un NSData
+    func saveInDocuments(data : NSData) {
+        
+        let blobNameUUID = "/video-\(NSUUID().UUIDString).mov"
+        // Obtenemos el 'path' del directorio donde voy  guardar y  ponerle un nombre  al fichero
+        // El primer parámetro le paso el directorio del documento y el 2º el dominio del usuario
+        // Como esto nos devuelve un array le decimos que nos devuelva el primer elemento => '[0]'
+        // como una cadena. Con esto ya tengo el 'path' del directorio mi documents, de mi'Sanbox'
+        let documents = NSSearchPathForDirectoriesInDomains(.DocumentationDirectory, .UserDomainMask, true)[0] as String
+        // Ahora le agrego a documents  un nombre de fichero al vídeo  a guardar que he capturado
+        // A este fichero le doy un nombre con un 'UUIDString' ya creado y con  la extensión 'mov'.
+        let filePath = documents.stringByAppendingString(blobNameUUID)
+        // Ya tenemos el nombre del fichero, pero el fichero  aún no existe, o creo que no existe.
+        // Para ello compruebo con un 'if' si existe o no el fichero. Con 'contentsOfFile' obtngo
+        // todas las coincidencias que encuentra en el'filePath' que le paso, metidas en un array
+        let array = NSArray(contentsOfFile: filePath) as? [String]// si lo puede desempaquetar...
+        // Pregunto si el array  está vacio, es decir, no ha encontrado coincidencias en el Path,
+        // ya que si encuentra  coincidencias, es  que el fichero ya existe y se sobreescribiría.
+        // Puedo preguntar si es nil, es un opcional, y compruebo si está a nil, para persistirlo
+        // ya que, al comprobar  que no es nil, es  que no existe, por tanto  podemos persistirlo.
+        if (array == nil) {
+            // voy a persistir el fichero localmente
+            data.writeToFile(filePath, atomically: true)
+            // Para  subirlo  a  Azure, llamo a  la  función que  he  creado ==> 'uploadToStorage'
+            uploadToStorage(data, blobName: blobNameUUID)
+        }
+    }
+    
 }
+
+
+
+// Implemento  los métodos de  protocolos, al menos cuando termino de capturar el vídeo, para
+// que nospermita obtener ese vídeo capturado. Para ello implemteo las siguientes extensiones
+
+// Añado el UINavigationViewController para tener navegación y el del UIImagePickerController
+// ¿De que hago la extensión?, pues de la clase que estoy ==> 'DetailContainerTableController'
+extension DetailContainerTableController: UINavigationControllerDelegate{
+    
+    // Este se queda vacío, lo implemento siempre fuera de la clase
+}
+
+extension DetailContainerTableController: UIImagePickerControllerDelegate{
+    
+    // Aquí  si  que  implemento  el  método  ===>  didFinishPickingMediaWithInfo',
+    // es  la  respuesta  de la  clase  Picker, del  protocolo, que lo  que  hace,
+    // que  cuando se  termina de capturar el vídeo, el  usuario le da a utilizar
+    // la cámara y termina la captura de éste, el control nos viene a este método
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        
+        // Recojo  lo  que  he recibido, el parámetro 'info' tiene  una key que se
+        // va  a poder  tener acceso a  lo que hemos capturado, lo casteo a cadena
+        let mediaType = info[UIImagePickerControllerMediaType] as! String
+        
+        // Comprobamos  que  hemos  capturado, si  es  un  vídeo ==> 'kUTTypeMovie'
+        if(mediaType == kUTTypeMovie as String) {
+            
+            // Lo persisitimos  en local, para ello contruyo un  path, aunque no es
+            // necesario  persistrilo en local, por contra  si en la nube ==> Azure
+            // Obtengo de la clave 'info', preguntando donde se ha almacenado tempo/
+            // el vídeo que acabamos de capturar, obteniendo el 'path'(casteo a URL)
+            let path = (info[UIImagePickerControllerMediaURL] as! NSURL).path
+            
+            // Tenemos  que  persistir  en local - solo  por aprender
+            // Creo  el  siguiente método, que  lo que  va a  recibir
+            // es,  por un  lado el  buffer NSData que tiene el vídeo
+            // y por otro lado el path donde está almacenado el vídeo
+            saveInDocuments(NSData(contentsOfURL: NSURL(fileURLWithPath: path!))!)
+            
+            // Una  vez que  se ha  capturado, hacemos  una acción  de usuario
+            // sacando el típido alert informando  al  usuario de  lo sucedido
+            // De  momento  lo  dejo  guardado  en  el  carrete. El método del
+            // selector   que   creamos   tendrá  un  parámetro   'contextInfo',
+            // por  si  quesiéramos  pasarle  el  contexInfo del UIImagePicker.
+            // Le  pasamos  también el 'path' donde tenemos  guardado el vídeo.
+            // El target seremos  nosotros mismos, este  controlador ==> 'self'
+            // El 'contextInfo' último parámetro  a nil, no le paso nigún dato.
+            UISaveVideoAtPathToSavedPhotosAlbum(path!, self, "video:didFinishSavingWithError:contextInfo", nil)
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
