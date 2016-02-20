@@ -113,6 +113,21 @@ class DetailContainerTableController: UITableViewController {
     }
     // MARK: - IBActions
     
+    // Activo el 'Regresh Control' en el 'inspector de propiedades'
+    // y creo este'IBAction' para poder refrescar la tabla-cambios
+    @IBAction func refreshTable(sender: AnyObject) {
+        
+        // Aquí  tengo que  actualizar la tabla, el modelo, etc, etc
+        // Cuando sólo se elimina una fila del modelo-table, hacemos
+        // una  actualización sólo  para las filas de la tabla  y no
+        // un  reloadData de  toda la tabla, a no  ser que haya  que
+        // actualizar toda la tabla en concreto, es decir, el modelo.
+        tableView.reloadData()
+        
+        // Por último, termino el  'Refresh Control'  de la  tabla.
+        sender.endRefreshing()
+    }
+    
     // Botón para s ubir contenido  a nuestro  container  en Azure
     @IBAction func uploadContenido(sender: AnyObject) {
         
@@ -163,6 +178,7 @@ class DetailContainerTableController: UITableViewController {
     // Tengo que obtener el indexPath del elemento a eliminar, borrarlo
     // de nuestro modelo local y  borrarlo también  del Storgade  Azure
     override func tableView(
+        
         tableView: UITableView,
         commitEditingStyle editingStyle: UITableViewCellEditingStyle,
         forRowAtIndexPath indexPath: NSIndexPath) {
@@ -177,23 +193,23 @@ class DetailContainerTableController: UITableViewController {
         }
     }
     
-    /// Método para  actualizar-borrar el objeto del indexPath recibido
+    /// Método para  update-delete el objeto del indexPath recibido
     func updateLocalModelWithIndexpath(index: NSIndexPath){
         
-        // Realizo  un 'beginUpdates' de  la tabla-actualizo
         // Antes  de  actualizar la tabla ===> 'beginUpdates'
         tableView.beginUpdates()
         
         // Una, la quito de la vista, no compruebo  si es nil
         // Espera recibir un array  indexPath, sólo tengo uno
-        tableView.deleteRowsAtIndexPaths([index], withRowAnimation: .Automatic)
+        tableView.deleteRowsAtIndexPaths([index],
+            withRowAnimation: .Automatic)
     
         // Segundo, elimino  el fichero  del Storage  de Azure
         // Me creo un método nuevo  para no tenerlo  todo aquí
         // Le pasamos el elemento que vamos a eliminar Storage
         deleteBlob(model![index.row])
         
-        // Último la  quito de local, que  es  nuestro modelo
+        // Último la quito de local, que  es  nuestro modelo
         // Le paso al modelo la fila-row  que quiero eliminar
         model?.removeAtIndex(index.row)
         

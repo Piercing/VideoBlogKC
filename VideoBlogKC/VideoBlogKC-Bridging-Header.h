@@ -4,6 +4,9 @@
 
 #import "Azure_Storage_Client_Library.h"
 
+#import <WindowsAzureMobileServices/WindowsAzureMobileServices.h>
+
+
 //#import <MicrosoftAzureMobile/MicrosoftAzureMobile.h>
 
 

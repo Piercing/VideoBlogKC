@@ -13,12 +13,14 @@ import UIKit
 
 class ContainersTableController: UITableViewController {
     
-    
     // Incluyo   una  cuenta  de   Azure  para  los   contenedores  en  Cloud
     // Tomo la PRIMARY CONNECTION STRING de la consola de Azure y se  la paso
     // Esta no es la mejor manera de acceder al servicio, de momento nos vale
+    // NOTA: no utilizar  esta account  para desarrollo, exponemos  la cuenta
     let account = AZSCloudStorageAccount(fromConnectionString:
-        "DefaultEndpointsProtocol=https;AccountName=videoblogappkc;AccountKey=0ZJDg5L3FEN88kHOC63f3sK7asPiz1BLhRWG7PlDvxwiIwRHKvK6a9G5K+jvi+WRcJa7ygajC8MTdj6pWbTMKQ==")
+        "DefaultEndpointsProtocol=https;AccountName=videoblogappkc;" +
+        "AccountKey=0ZJDg5L3FEN88kHOC63f3sK7asPiz1BLhRWG7PlDvxwiIwRHKvK6a9G5K+" +
+        "jvi+WRcJa7ygajC8MTdj6pWbTMKQ==")
     
     // Creo  un  array para  poder  pasárselo  a  la tabla con el
     // contenido  del contenedor  que he creado en  Azure Storage
@@ -130,7 +132,7 @@ class ContainersTableController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-    // Pregunto cual es la escena que ha sido seleccionada
+        // Pregunto cual es la escena que ha sido seleccionada
         if(segue.identifier == "containerDetail"){
             
             // Esto abre una vista tipo 'DetailContainerTableController', que es el controlador destino que le he indicado

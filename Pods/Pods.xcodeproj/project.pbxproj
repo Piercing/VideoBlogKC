@@ -32,6 +32,7 @@
 		4553AD91CBEAFA9CEB37B847573548C3 /* AZSCloudBlockBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = B913EFA001CDE4F78734B3F3AA9DEC6C /* AZSCloudBlockBlob.m */; };
 		46DA7E47DF54DEBA16251B16D46A9370 /* AZSCloudBlobClient.m in Sources */ = {isa = PBXBuildFile; fileRef = EE3362AE7471B81D4BF13D9DBB3A2A4D /* AZSCloudBlobClient.m */; };
 		4844CD5AC50C1807DCEFE0FBB49333D2 /* AZSClient-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B23DBD6C9527EDB3E393C29B8FBE158 /* AZSClient-dummy.m */; };
+		522FE72D1C77E4B400BD29A9 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 522FE72C1C77E4B400BD29A9 /* WindowsAzureMobileServices.framework */; };
 		5334670A55DD6A92EE5759C43DBE6661 /* AZSRetryPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = 51B8C04EC2198FDE89A1E3FB939FE1F8 /* AZSRetryPolicy.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		534F033E957AA805EBC74EC13E6162C1 /* AZSBlobRequestOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = A6A1809DD2E057E9084B1FF350540D70 /* AZSBlobRequestOptions.m */; };
 		59D51264E3BE12D69F7BF61FB7E195D8 /* AZSCloudBlobContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 334596EEE80AB794DFBF94F31AEC55D6 /* AZSCloudBlobContainer.m */; };
@@ -140,6 +141,7 @@
 		4EE0B060BC6AB3DA63767E129FBA9B21 /* AZSRequestResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AZSRequestResult.h; path = "Lib/Azure Storage Client Library/Azure Storage Client Library/AZSRequestResult.h"; sourceTree = "<group>"; };
 		51B8C04EC2198FDE89A1E3FB939FE1F8 /* AZSRetryPolicy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AZSRetryPolicy.h; path = "Lib/Azure Storage Client Library/Azure Storage Client Library/AZSRetryPolicy.h"; sourceTree = "<group>"; };
 		51E77F0B981FB1A765AC04EFA0E2E5BB /* libAZSClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAZSClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		522FE72C1C77E4B400BD29A9 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		5FAA3024D2580DB5EFD41D4ED184DE68 /* AZSStorageUri.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AZSStorageUri.h; path = "Lib/Azure Storage Client Library/Azure Storage Client Library/AZSStorageUri.h"; sourceTree = "<group>"; };
 		656337D7C2B79FBA8B6D5F991EE0D464 /* AZSNavigationUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AZSNavigationUtil.m; path = "Lib/Azure Storage Client Library/Azure Storage Client Library/AZSNavigationUtil.m"; sourceTree = "<group>"; };
 		67689B4FDC4381247A71121485707AF6 /* AZSBlobRequestOptions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AZSBlobRequestOptions.h; path = "Lib/Azure Storage Client Library/Azure Storage Client Library/AZSBlobRequestOptions.h"; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				522FE72D1C77E4B400BD29A9 /* WindowsAzureMobileServices.framework in Frameworks */,
 				CAFC4B126E895FB8CEA35738F3FEBA27 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +319,7 @@
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
+				522FE72C1C77E4B400BD29A9 /* WindowsAzureMobileServices.framework */,
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
 				BC3CA7F9E30CC8F7E2DD044DD34432FC /* Frameworks */,
 				AE416ED375F9C97BAD49B2B959B4BC96 /* Pods */,
@@ -570,6 +574,10 @@
 			baseConfigurationReference = C3878180F21A9701A1569366B75483D4 /* AZSClient.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "Target Support Files/AZSClient/AZSClient-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -588,6 +596,10 @@
 			baseConfigurationReference = C3878180F21A9701A1569366B75483D4 /* AZSClient.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PREFIX_HEADER = "Target Support Files/AZSClient/AZSClient-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				MTL_ENABLE_DEBUG_INFO = YES;

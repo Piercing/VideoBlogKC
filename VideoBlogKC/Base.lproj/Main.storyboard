@@ -36,6 +36,12 @@
                         </barButtonItem>
                     </toolbarItems>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="9pC-2E-PEb">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="refreshTable:" destination="W8i-5A-6nZ" eventType="valueChanged" id="ycv-na-ssA"/>
+                        </connections>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nek-q3-H3O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

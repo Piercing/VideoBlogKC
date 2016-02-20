@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		522FE72F1C77E52600BD29A9 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 522FE72E1C77E52600BD29A9 /* WindowsAzureMobileServices.framework */; };
 		5254D7221C74D77C006A1053 /* ContainersTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5254D7211C74D77C006A1053 /* ContainersTableController.swift */; };
 		5254D7241C74F57A006A1053 /* DetailContainerTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5254D7231C74F57A006A1053 /* DetailContainerTableController.swift */; };
 		528E6D0D1C7534610039BCE8 /* FONDOS_PANTALLA_024.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 528E6D0C1C7534610039BCE8 /* FONDOS_PANTALLA_024.jpg */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		252A83DA33CAADFF9E6451CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		520ABF071C765A7E00071CF1 /* MyPlaygroundVideoBlobKC.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlaygroundVideoBlobKC.playground; sourceTree = "<group>"; };
+		522FE72E1C77E52600BD29A9 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMobileServices.framework; path = Pods/WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
 		5254D7211C74D77C006A1053 /* ContainersTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainersTableController.swift; sourceTree = "<group>"; };
 		5254D7231C74F57A006A1053 /* DetailContainerTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailContainerTableController.swift; sourceTree = "<group>"; };
 		528E6D0C1C7534610039BCE8 /* FONDOS_PANTALLA_024.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = FONDOS_PANTALLA_024.jpg; sourceTree = "<group>"; };
@@ -46,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				522FE72F1C77E52600BD29A9 /* WindowsAzureMobileServices.framework in Frameworks */,
 				52B6D3291C737AAF008F73DE /* libxml2.2.tbd in Frameworks */,
 				643011AF88AD31E8F18EDAE7 /* libPods.a in Frameworks */,
 			);
@@ -120,6 +123,7 @@
 		89DE4617AB6B5BF9C86F2577 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				522FE72E1C77E52600BD29A9 /* WindowsAzureMobileServices.framework */,
 				52B6D3281C737AAF008F73DE /* libxml2.2.tbd */,
 				B83A3C45CEF8BEAF986F32A8 /* libPods.a */,
 			);
@@ -370,6 +374,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods",
 				);
 				INFOPLIST_FILE = VideoBlogKC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -389,6 +394,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Pods",
 				);
 				INFOPLIST_FILE = VideoBlogKC/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
