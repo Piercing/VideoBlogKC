@@ -190,10 +190,8 @@
                     </view>
                     <connections>
                         <outlet property="saveInAzureButton" destination="gXP-x3-KJ8" id="6e4-Tt-bA8"/>
-                        <outlet property="saveInAzurewButton" destination="gXP-x3-KJ8" id="H1Q-Gb-a2N"/>
                         <outlet property="titleText" destination="2yB-N7-D9H" id="XcQ-XK-pTU"/>
                         <outlet property="validatorLabel" destination="v12-1m-LK2" id="ldK-Ig-H6j"/>
-                        <outlet property="viewPostController" destination="gXP-x3-KJ8" id="b0C-SP-0Jr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H3H-Bt-NjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -203,7 +201,7 @@
         <!--My Timeline Controller-->
         <scene sceneID="g3q-9f-Cfl">
             <objects>
-                <tableViewController title="My Timeline Controller" id="flq-c4-u4e" sceneMemberID="viewController">
+                <tableViewController title="My Timeline Controller" id="flq-c4-u4e" customClass="MyTimeLineViewController" customModule="VideoBlogKC" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="sHi-5b-QdE">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -223,6 +221,9 @@
                             <outlet property="delegate" destination="flq-c4-u4e" id="Xaq-RA-CsQ"/>
                         </connections>
                     </tableView>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Eoi-fo-1rI">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                     <connections>
                         <segue destination="LLj-dw-d68" kind="show" identifier="viewVideos" id="oPh-UK-uPp"/>
                         <segue destination="H89-El-RbV" kind="show" identifier="addNewItem" id="cNU-gw-8NT"/>
