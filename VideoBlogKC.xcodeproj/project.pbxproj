@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		522FE72F1C77E52600BD29A9 /* WindowsAzureMobileServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 522FE72E1C77E52600BD29A9 /* WindowsAzureMobileServices.framework */; };
+		5238A4D21C78EA4000A505AA /* MyTimeLineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238A4D11C78EA4000A505AA /* MyTimeLineViewController.swift */; };
+		5238A4D41C7934AF00A505AA /* ViewPostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5238A4D31C7934AF00A505AA /* ViewPostController.swift */; };
 		5254D7221C74D77C006A1053 /* ContainersTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5254D7211C74D77C006A1053 /* ContainersTableController.swift */; };
 		5254D7241C74F57A006A1053 /* DetailContainerTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5254D7231C74F57A006A1053 /* DetailContainerTableController.swift */; };
 		528E6D0D1C7534610039BCE8 /* FONDOS_PANTALLA_024.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 528E6D0C1C7534610039BCE8 /* FONDOS_PANTALLA_024.jpg */; };
@@ -25,6 +27,8 @@
 		252A83DA33CAADFF9E6451CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		520ABF071C765A7E00071CF1 /* MyPlaygroundVideoBlobKC.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlaygroundVideoBlobKC.playground; sourceTree = "<group>"; };
 		522FE72E1C77E52600BD29A9 /* WindowsAzureMobileServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WindowsAzureMobileServices.framework; path = Pods/WindowsAzureMobileServices.framework; sourceTree = "<group>"; };
+		5238A4D11C78EA4000A505AA /* MyTimeLineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTimeLineViewController.swift; sourceTree = "<group>"; };
+		5238A4D31C7934AF00A505AA /* ViewPostController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPostController.swift; sourceTree = "<group>"; };
 		5254D7211C74D77C006A1053 /* ContainersTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainersTableController.swift; sourceTree = "<group>"; };
 		5254D7231C74F57A006A1053 /* DetailContainerTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailContainerTableController.swift; sourceTree = "<group>"; };
 		528E6D0C1C7534610039BCE8 /* FONDOS_PANTALLA_024.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = FONDOS_PANTALLA_024.jpg; sourceTree = "<group>"; };
@@ -66,14 +70,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		5254D7201C74D736006A1053 /* ViewsControllers */ = {
+		5238A4D01C78D96300A505AA /* ViewsControllers with AMS */ = {
+			isa = PBXGroup;
+			children = (
+				5238A4D11C78EA4000A505AA /* MyTimeLineViewController.swift */,
+				5238A4D31C7934AF00A505AA /* ViewPostController.swift */,
+			);
+			name = "ViewsControllers with AMS";
+			sourceTree = "<group>";
+		};
+		5254D7201C74D736006A1053 /* ViewsControllers with Storage */ = {
 			isa = PBXGroup;
 			children = (
 				52B6D3141C735B54008F73DE /* ViewController.swift */,
 				5254D7211C74D77C006A1053 /* ContainersTableController.swift */,
 				5254D7231C74F57A006A1053 /* DetailContainerTableController.swift */,
 			);
-			name = ViewsControllers;
+			name = "ViewsControllers with Storage";
 			sourceTree = "<group>";
 		};
 		528E6D0E1C75346E0039BCE8 /* Resources */ = {
@@ -107,8 +120,9 @@
 		52B6D3111C735B54008F73DE /* VideoBlogKC */ = {
 			isa = PBXGroup;
 			children = (
+				5238A4D01C78D96300A505AA /* ViewsControllers with AMS */,
 				52B6D3121C735B54008F73DE /* AppDelegate.swift */,
-				5254D7201C74D736006A1053 /* ViewsControllers */,
+				5254D7201C74D736006A1053 /* ViewsControllers with Storage */,
 				52B6D3161C735B54008F73DE /* Main.storyboard */,
 				52B6D3191C735B54008F73DE /* Assets.xcassets */,
 				52B6D31B1C735B54008F73DE /* LaunchScreen.storyboard */,
@@ -258,7 +272,9 @@
 				52B6D3151C735B54008F73DE /* ViewController.swift in Sources */,
 				52B6D3131C735B54008F73DE /* AppDelegate.swift in Sources */,
 				5254D7241C74F57A006A1053 /* DetailContainerTableController.swift in Sources */,
+				5238A4D21C78EA4000A505AA /* MyTimeLineViewController.swift in Sources */,
 				52D3D0B51C74CA0B0039BB01 /* AzFake.m in Sources */,
+				5238A4D41C7934AF00A505AA /* ViewPostController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

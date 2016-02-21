@@ -32,15 +32,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let table = client.tableWithName("elementos")
         
         // Insertando en la tabla
-//        table.insert(item) {
-//            // Recibe un 'AnyObject' y un 'NSError'
-//            (insertedItem, error: NSError?) -> Void in
-//            if (error != nil) {
-//                print("Error" + error!.description);
-//            } else {
-//                print("Item inserted, id:  \(insertedItem["id"])")
-//            }
-//        }
+        table.insert(item) {
+            // Recibe un 'AnyObject' y un 'NSError'
+            (insertedItem, error: NSError?) -> Void in
+            if (error != nil) {
+                print("Error" + error!.description);
+            } else {
+                print("Item inserted, id:  \(insertedItem["id"])")
+            }
+        }
         
         // Creando  el  predicado, buscando   edad < 18 años
         let predicate = NSPredicate(format: "edad < 19", [])

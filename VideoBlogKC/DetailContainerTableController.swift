@@ -282,7 +282,7 @@ class DetailContainerTableController: UITableViewController {
     func saveInDocuments(data : NSData) {
         
         // Constante con la cual doy nombre con un 'UUIDString' ya creado y con la extensión 'mov'
-        let blobNameUUID = "video-\(NSUUID().UUIDString).mov"
+        let blobNameUUID = "/video-\(NSUUID().UUIDString).mov"
         // Obtenemos el 'path' del directorio donde voy  guardar y  ponerle un nombre  al fichero
         // El primer parámetro le paso el directorio del documento y el 2º el dominio del usuario
         // Como esto nos devuelve un array le decimos que nos devuelva el primer elemento => '[0]'
@@ -335,7 +335,7 @@ func video(videoPath: String, didFinishSavingWithError error: NSError?, contextI
 
 
 // Implemento  los métodos de  protocolos, al menos cuando termino de capturar el vídeo, para
-// que nospermita obtener ese vídeo capturado. Para ello implemteo las siguientes extensiones
+// q  nos permita obtener ese vídeo capturado. Para ello implemteo las siguientes extensiones
 
 // Añado el UINavigationViewController para tener navegación y el del UIImagePickerController
 // ¿De que hago la extensión?, pues de la clase que estoy ==> 'DetailContainerTableController'
