@@ -313,6 +313,7 @@ class DetailContainerTableController: UITableViewController {
 /// Función vídeo: muestra una alerta cuando el vídeo se ha guardado  correctamente + contexInfo?
 //  El método 'UISaveVideoAtPathToSavedPhotosAlbum'  llamodo en la función 'imagePickerController'
 //  me o bliga a i mplementar un 'selector' como  parámetro al guardar el  vídeo, y le  paso éste
+//@available(iOS 8.0, *)
 func video(videoPath: String, didFinishSavingWithError error: NSError?, contextInfo: AnyObject){
     
     var title = "Ok"

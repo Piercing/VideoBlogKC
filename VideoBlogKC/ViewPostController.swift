@@ -58,18 +58,18 @@ class ViewPostController: UIViewController {
         
         // Partimos de la base de tener el vídeo y en primer lugar  guardamos  en la base de  datos de Azure.//
         
-        // Inserto datos en la tabla que acabo d referenciar. Como título el texto he capturado en el textField
+        // Inserto datos en la tabla que acabo d referenciar. Como título el texto    capturado en el textField
         // Aprovecho  para Asignar  el nombre  del 'blogName' y  darle  un nombre  al 'container' que he creado
         // Cuando se haya guardado, se llama al closure  por  si hay error o bien para subir el vídeo  a  Azure
         
-        tablaVideos?.insert(["titulo" : titleText.text!, "blobName" : myBlobName!, "containername" : "misvideoblogs"], completion: {
+        tablaVideos?.insert(["titulo" : titleText.text!, "blobName" : myBlobName!, "containername" : "pruebas"], completion: {
             (inserted: [NSObject : AnyObject]!, error : NSError?) -> Void in
             if error != nil{
                 print("Huston we have a problem saving your video")
             }else{
                 // Llegados a  este punto el vídeo  tiene que estar  capturado. Le paso la propiedad que
                 // tiene la clase para retener los NSData del vídeo capturado y el  nombre del 'blobname'
-                print("Houste, overtaken first part. Right!! (Ya tenemos el registro en la BBDD, ahora toca blob)")
+                print("Houston, overtaken first part. Right!! (Ya tenemos el registro en la BBDD, ahora toca blob)")
                 // le paso los 'NSdata' del vídeo y el nombre para persistir el blob en Storage de Azure
                 self.uploadToStorage(self.bufferVideo!, blobName: self.myBlobName!)
             }
@@ -150,33 +150,99 @@ class ViewPostController: UIViewController {
     /// Recibe el NSData  del archivo que he  capturado y el nombre del recurso
     func uploadToStorage(data : NSData, blobName : String){
         
-        // La mecánica es casi  siempre la misma, tengo el contenedor y lo que
-        // voy a hace es crear un blob local, persistirlo localmente y una vez
-        // creado tengo que  subirlo, hacerle el upload  del mismo a la cuenta.
         
-        // Blob  local, generamos un  bloque local con un nombre  diferenciado
-        // Esto me crea un blob local, con un  nombre exclusivo, como  prefijo
-        //  =>'blob' le podemos pasar un ID  de usuario  si lo tuviéramos  con
-        // lo que no vulnera y con un NSUUID convertido todo esto a un  String
-        // Éste genera un número aleatorio después del 'blob-' que se asignará
-        // a la imagen que se va a subir, cada vez que se suba crea  uno nuevo
+        // Voy a invoke la  api 'urlsasblobandcontainer' y obtener
+        // una URL y poder subir el blob a Mobile Service de Azure
         
-        //        let blobLocal = currentContainer?.blockBlobReferenceFromName(blobName)
-        //
-        //        // Tengo   que  convertir  la  imagen  en  NSData
-        //        // var data : NSData?
-        //        // Para generar el NSData de la imagen que quiero
-        //        // subir y que  acabo  de  incoporar al  proyecto
-        //        // data = UIImageJPEGRepresentation(UIImage(named: "FONDOS_PANTALLA_024.jpg")!, 0.8)
-        //        // Mediante este bloque local ya podemos subir con alguno de sus  métodos
-        //        // Recibe un  NSData, un  elemento  binario  comprimido, y  un bloque  de
-        //        // finalización, un closure que recibe un error en caso de que lo hubiera.
-        //        blobLocal?.uploadFromData(data , completionHandler: { (error : NSError?) -> Void in
-        //            // Si hay error, lo muestro por consola mismamente
-        //            if (error != nil){
-        //                print("Error -> \(error)")
-        //            }
-        //        })
+        //********************* 1º **********************
+        // Invocar la Api mediante el 'client'
+        client?.invokeAPI("urlsasblobandcontainer",
+            body: nil,
+            HTTPMethod: "GET",
+            // como  parámetros  el nombre  del contenedor y del blob
+            parameters: ["blobName" : myBlobName!, "ContainerName" : "pruebas" ],
+            headers: nil,
+            // El primer parámetro devuelve el diccionario con la URL
+            // que hemos  generado para poder  subir un  blob a Azure
+            // El segundo, es la  respuesta, por si queremos analizar
+            // el tipo de respuesta como por ejemplo que nos devuelva
+            // un '205' u  otra  respuesta  y por  último el 'NSError'
+            completion: { (result : AnyObject?, response : NSHTTPURLResponse?, error : NSError?) -> Void in
+                
+                // Si no hay error
+                if error == nil {
+                    
+                    // ********************* 2º **********************
+                    // es  que en el 'result' recibo un diccionario con
+                    // una clave  que se llamará ==> 'sasURL' que tiene
+                    // un valor, que es el  que a nosotros nos interesa
+                    // Con esta sólo tenemos la ruta del container/blob
+                    let sasURL = result!["sasUrl"] as? String
+                    
+                    // ********************* 3º **********************
+                    // En  vez de  crear el  container  desde Azure, lo
+                    // vamos  a  hacer  desde  aquí, partiendo  de esta
+                    // 'sasURL'. Con esto tenemos la 'firma' de la URL,
+                    // pero tenemos que poner también el recurso al que
+                    // queremos acceder,tenemos que ponerle el endpoint
+                    // Hay que poner el 'endpoint 'del 'Storage' no del
+                    // Mobile Service.
+                    var endPoint = "https://videoblogappkc.blob.core.windows.net"
+                    
+                    // Ya  tenemos  la 'sasURL' y el 'endPoint'. Lo que
+                    // hacemos ahora es sumar las dos cadenas,  unirlas,
+                    // para tener la URL completa y poder subir o bajar
+                    // el recurso queremos acceder. En este caso  subir.
+                    
+                    // Sumamos  las cadenas == > 'endPoint'  y  'sasURl'
+                    endPoint += sasURL!
+                    
+                    // ********************** 4º ***********************
+                    //     APUNTANDO AL CONTAINER DE AZURE STORAGE
+                    // Ya podemos hacer  referencia a nuestro  container
+                    // para  poder  subir. Hasta ahora  usábamos el  que
+                    // tenía el blobClient y ahora usaremos directamente
+                    // una URL, que no es ni más ni menos  que 'endPoint'
+                    let container = AZSCloudBlobContainer(url: NSURL(string: endPoint)!)
+                    
+                    // ********************** 5º ***********************
+                    //           CREANDO NUESTRO BLOB LOCAL
+                    // Como no me permite subir un fichero, sino un blob
+                    // he de convertir el fichero a un tipo de dato blob
+                    // Desde el container tomo la referencia del  nombre
+                    // del  'blob', pasándole  el 'blobName' que  recibo
+                    let blobLocal = container.blockBlobReferenceFromName(blobName)
+                    
+                    // ********************** 6º ***********************
+                    // HACEMOS EL UPLOAD DE NUESTRO BLOB LOCAL * EL DATA
+                    //
+                    blobLocal.uploadFromData(data, completionHandler: {
+                        (error : NSError?) -> Void in
+                        
+                        // Aquí se supone  que  hemos controlado el éxito
+                        // Recordar también, que tenemos un button, en el
+                        // storyBoard del viewController, el cual  estaba
+                        // desactivado para poder subir los datos a Azure
+                        
+                        // Si no hay error
+                        if error != nil {
+                            // Deshabilito el botón. Como las clase de AZS
+                            // trabajan en 2º plano, tenemos que volver al
+                            // hilo principale para poder llevarlo a  cabo
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                // Deshabilito el botón
+                                self.saveInAzureButton.enabled = false
+                            })
+                        } else{
+                            print("Houston we have a problem: Error!! -> \(error)")
+                        }
+                        
+                        // NOTA: CON ESTO HEMOS  TERMINADO TODO EL PROCESO DE
+                        // ASOCIAR EL ELEMENTO EN UNA TABLA DE MOBILE SERVICE
+                        // Y  DE  SUBIR  EL  'BLOB'  AL  STORAGE   DE  'AZURE'
+                    })
+                }
+        })
     }
 }
 
